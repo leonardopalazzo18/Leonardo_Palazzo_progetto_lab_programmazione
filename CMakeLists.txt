@@ -1,0 +1,6 @@
+cmake_minimum_required(VERSION 4.0)
+project(Progetto_NoteCollection_Lab_Leonardo_Palazzo)
+
+set(CMAKE_CXX_STANDARD 20)
+
+add_executable(Progetto_NoteCollection_Lab_Leonardo_Palazzo main.cpp)
