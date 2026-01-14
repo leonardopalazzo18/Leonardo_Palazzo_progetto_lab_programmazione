@@ -5,4 +5,6 @@ set(CMAKE_CXX_STANDARD 20)
 
 add_executable(Progetto_NoteCollection_Lab_Leonardo_Palazzo main.cpp
         Nota.h
-        Nota.cpp)
+        Nota.cpp
+        Subject.h
+        Observer.h)
