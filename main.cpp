@@ -5,6 +5,7 @@
 #include <vector>
 #include <memory>
 #include <string>
+#include <limits>
 
 
 
@@ -29,7 +30,7 @@ void viewNotes(const std::vector<std::shared_ptr<Nota>>& AllNotes)
 {
     if (!AllNotes.empty()){
         std::cout<<"        NOTE:       "<<std::endl;
-        int n=1;
+        int n=0;
         for (const auto&  it : AllNotes) {
             std::cout << "[" <<n<< "] ";
             it->viewNote();
@@ -38,7 +39,45 @@ void viewNotes(const std::vector<std::shared_ptr<Nota>>& AllNotes)
     }
 }
 
+int selectNote(const std::vector<std::shared_ptr<Nota>>& notes) {
+    if (notes.empty()) {
+        std::cout << "Non ci sono note!" << std::endl;
+        return -1;
+    }
+    viewNotes(notes);
+    int n;
+    do
+    {
+        std::cout << "Seleziona il numero della nota: ";
+        std::cin>>n;
+        if (n < 0 || n >= notes.size()) {
+            std::cout << "Inserisci un numero valido" << std::endl;
+        }
+    }while (n < 0 || n >= notes.size());
+    return n;
+}
 
+
+int selectCollection(const std::vector<std::shared_ptr<Collezione>>& collections) {
+    if (collections.empty()) {
+        std::cout <<"Non ci sono collezioni" << std::endl;
+        return -1;
+    }
+    std::cout << "      COLLEZIONI      " << std::endl;
+    for (int i = 0; i < collections.size(); ++i) {
+        std::cout << "["<<i<<"]" << collections[i]->getName() << std::endl;
+    }
+    int n;
+    do
+    {
+        std::cout << "Seleziona il numero della collezione: ";
+        std::cin>>n;
+        if (n < 0 || n >= collections.size()) {
+            std::cout << "Inserisci un numero valido" << std::endl;
+        }
+    }while (n < 0 || n >= collections.size());
+    return n;
+}
 
 int main()
 {
@@ -65,41 +104,124 @@ int main()
         std::cin >> choice;
         if (choice<0 or choice > 9)
         {
-
             std::cout<<"Per favore inserire un comando corretto"<<std::endl;
             continue; //riparte il ciclo e rimostra il menù
         }
         switch (choice)
         {
-            case 0:
+        case 0: //CHIUDI IL PROGRAMMA
+            {
+                std::cout<<"Arrivederci!"<<std::endl;
+                break;
+            }
+        case 1: //CREA UNA NOTA
+            {
+                std::string titolo;
+                std::string testo;
+                std::cout<<"Inserisci titolo della nota: ";
+                std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                std::getline(std::cin, titolo);
+                std::cout<<"Inserisci testo: ";
+                std::getline(std::cin,testo);
+                auto newNota = std::make_shared<Nota>(titolo, testo);
+                AllNotes.push_back(newNota);
+                std::cout<<"La nota e stata creata!"<<std::endl;
+                break;
+            }
+        case 2: //ELIMINA UNA NOTA O UNA COLLEZIONE
+            {
+                int choice2;
+                do
                 {
-                    std::cout<<"Arrivederci!"<<std::endl;
-                }
-            case 1:
+                    std::cout<<"[1] ELIMINA NOTA"<<std::endl;
+                    std::cout<<"[2] ELIMINA COLLEZIONE: " <<std::endl;
+                    std::cout<<"[0] TORNA AL MENU"<<std::endl;
+                    std::cout<<"cosa vuoi fare?: ";
+                    std::cin>>choice2;
+                    if (choice2<=0 or choice2 > 2)
+                    {
+                        std::cout<<"Per favore inserire un comando corretto"<<std::endl;
+                        continue; //riparte da scelta2 e mostra di nuovo le opzioni di elimnazione
+                    }
+                    switch (choice2)
+                    {
+                        case 0:
+                            {
+                                std::cout<<"Sarai reindirizzato al menù"<<std::endl;
+                                break;
+                            }
+                        case 1:
+                            {
+                                int eliminated = selectNote(AllNotes);
+                                if (eliminated == -1)
+                                    break;
+                                AllNotes.erase(AllNotes.begin()+eliminated);
+                                std::cout<<"La nota e' stata eliminata"<<std::endl;
+                                break;
+                            }
+                        case 2:
+                            {
+                                //prendo il numero della collezione da eliminare ma evito che venga eliminata la collezione 0 ovvero quella delle note importanti
+                                int eliminated = selectCollection(AllCollections);
+                                if (eliminated == -1)
+                                    break;
+                                if (eliminated == 0){
+                                    std::cout<<"Non e' possibile eliminare la collezione IMPORTANTI"<<std::endl;
+                                    break;
+                                }
+                                //ripristino l'attributo CollectionName di tutte le note che facevano parte della collezione eliminata
+                                std::string eliminated_name = AllCollections[eliminated]->getName();
+                                for (const auto& it: AllNotes)
+                                {
+                                    if (it->getCollectionName() == eliminated_name)
+                                        it->setCollectionName("");
+                                }
+                                AllCollections.erase(AllCollections.begin() + eliminated);
+                                std::cout<<"La collezione e stata eliminata"<<std::endl;
+                                break;
+                            }
+                        default:
+                            {
+                                std::cout<<"Inserire un comando corretto" << std::endl;
+                                break;
+                            }
+                    }
+                }while (choice2 != 0);
+            }
+        /*case 3: //BLOCCA/SBLOCCA UNA NOTA
+            {
+                int choice3;
+                do
                 {
-                    std::string titolo;
-                    std::string testo;
-                    std::cout<<"Inserisci titolo della nota: ";
-                    std::cin>>titolo;
-                    std::cout<<"Inserisci testo: ";
-                    std::cin>>testo;
-                    auto newNota = std::make_shared<Nota>(titolo, testo);
-                    AllNotes.push_back(newNota);
-                    std::cout<<"La nota " << newNota->getTitle()<<" è stata creata"<<std::endl;
-                    break;
-            case 8:
-                {
-                    viewNotes(AllNotes);
-                    break;
-                }
-            default:
-                {
-                    std::cout<<"Inserire un comando corretto"<<std::endl;
-                    break;
-                }
+                    std::cout<<"[1] BLOCCA NOTA"<<std::endl;
+                    std::cout<<"[2] SBLOCCA NOTA: " <<std::endl;
+                    std::cout<<"[0] TORNA AL MENU"<<std::endl;
+                    std::cout<<"cosa vuoi fare?: ";
+                    std::cin>>choice3;
+                    if (choice3<=0 or choice3 > 2)
+                    {
+                        std::cout<<"Per favore inserire un comando corretto"<<std::endl;
+                        continue; //riparte da scelta3 e mostra di nuovo le opzioni blocca/sblocca
+                    }
+                    switch (choice3)
+                    {
+
+                    }
+
+                }while (choice3 != 0);
+                break;
+            }*/
+        case 8: //VISUALIZZA TUTTE LE NOTE
+            {
+                viewNotes(AllNotes);
+                break;
+            }
+        default:
+            {
+                std::cout<<"Inserire un comando corretto"<<std::endl;
+                break;
+            }
         }
-
     }while (choice !=0);
-
     return 0;
 }
