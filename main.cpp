@@ -23,7 +23,6 @@ void viewMenù()
     std::cout<<"[8] Visualizza tutte le note"<<std::endl;
     std::cout<<"[9] Modifica testo/titolo di una nota" <<std::endl;
     std::cout<<"Cosa vuoi fare? ";
-
 }
 
 void viewNotes(const std::vector<std::shared_ptr<Nota>>& AllNotes)
@@ -133,12 +132,12 @@ int main()
                 int choice2;
                 do
                 {
+                    std::cout<<"[0] TORNA AL MENU"<<std::endl;
                     std::cout<<"[1] ELIMINA NOTA"<<std::endl;
                     std::cout<<"[2] ELIMINA COLLEZIONE: " <<std::endl;
-                    std::cout<<"[0] TORNA AL MENU"<<std::endl;
                     std::cout<<"cosa vuoi fare?: ";
                     std::cin>>choice2;
-                    if (choice2<=0 or choice2 > 2)
+                    if (choice2<0 or choice2 > 2)
                     {
                         std::cout<<"Per favore inserire un comando corretto"<<std::endl;
                         continue; //riparte da scelta2 e mostra di nuovo le opzioni di elimnazione
@@ -147,7 +146,7 @@ int main()
                     {
                         case 0:
                             {
-                                std::cout<<"Sarai reindirizzato al menù"<<std::endl;
+                                std::cout<<"Sarai reindirizzato al menu"<<std::endl;
                                 break;
                             }
                         case 1:
@@ -181,47 +180,128 @@ int main()
                                 break;
                             }
                         default:
-                            {
-                                std::cout<<"Inserire un comando corretto" << std::endl;
                                 break;
-                            }
                     }
                 }while (choice2 != 0);
             }
-        /*case 3: //BLOCCA/SBLOCCA UNA NOTA
+        case 3: //BLOCCA/SBLOCCA UNA NOTA
             {
+                int selection = selectNote(AllNotes);
+                if (selection == -1)
+                    break;
                 int choice3;
                 do
                 {
+                    std::cout<<"[0] TORNA AL MENU"<<std::endl;
                     std::cout<<"[1] BLOCCA NOTA"<<std::endl;
                     std::cout<<"[2] SBLOCCA NOTA: " <<std::endl;
-                    std::cout<<"[0] TORNA AL MENU"<<std::endl;
                     std::cout<<"cosa vuoi fare?: ";
                     std::cin>>choice3;
-                    if (choice3<=0 or choice3 > 2)
+                    if (choice3<0 or choice3>2)
                     {
                         std::cout<<"Per favore inserire un comando corretto"<<std::endl;
                         continue; //riparte da scelta3 e mostra di nuovo le opzioni blocca/sblocca
                     }
                     switch (choice3)
                     {
-
+                        case 0:
+                            {
+                                std::cout<<"Sarai reindirizzato al menu"<<std::endl;
+                                break;
+                            }
+                        case 1:
+                            {
+                                if (!AllNotes[selection]->isLocked())
+                                {
+                                    AllNotes[selection]->setLocked(true);
+                                    std::cout<<"Nota BLOCCATA"<<std::endl;
+                                }
+                                else
+                                    std::cout<<"La nota e'gia bloccata!"<<std::endl;
+                                break;
+                            }
+                        case 2:
+                            {
+                                if (AllNotes[selection]->isLocked())
+                                {
+                                    AllNotes[selection]->setLocked(false);
+                                    std::cout<<"Nota SBLOCCATA"<<std::endl;
+                                }
+                                else
+                                    std::cout<<"La nota e'gia sbloccata!"<<std::endl;
+                                break;
+                            }
+                        default:
+                                break;
                     }
-
                 }while (choice3 != 0);
                 break;
-            }*/
+            }
+            case 4: //IMPORTANZA NOTA
+            {
+                int selection = selectNote(AllNotes);
+                if (selection == -1)
+                    break;
+                int choice3;
+                do
+                {
+                    std::cout<<"[0] TORNA AL MENU"<<std::endl;
+                    std::cout<<"[1] AGGIUNGI ALLE NOTE IMPORTANTI"<<std::endl;
+                    std::cout<<"[2] RIMUOVI DALLE NOTE IMPORTANTI: " <<std::endl;
+                    std::cout<<"cosa vuoi fare?: ";
+                    std::cin>>choice3;
+                    if (choice3<0 or choice3>2)
+                    {
+                        std::cout<<"Per favore inserire un comando corretto"<<std::endl;
+                        continue; //riparte da scelta3 e mostra di nuovo le opzioni blocca/sblocca
+                    }
+                    switch (choice3)
+                    {
+                        case 0:
+                            {
+                                std::cout<<"Sarai reindirizzato al menu"<<std::endl;
+                                break;
+                            }
+                        case 1:
+                            {
+                                if (!AllNotes[selection]->isImportant())
+                                {
+                                    AllCollections[0]->addNote(AllNotes[selection]);
+                                    if (!AllNotes[selection]->isLocked())
+                                        AllNotes[selection]->setImportant(true);
+                                }
+                                else
+                                    std::cout<<"La nota e' gia tra le IMPORTANTI"<<std::endl;
+                                break;
+                            }
+                        case 2:
+                            {
+                                if (AllNotes[selection]->isImportant())
+                                {
+                                    AllCollections[0]->removeNote(AllNotes[selection]);
+                                    if (!AllNotes[selection]->isLocked())
+                                        AllNotes[selection]->setImportant(false);
+                                }
+                                else
+                                    std::cout<<"La nota non e' tra le note IMPORTANTI!"<<std::endl;
+                                break;
+                            }
+                    default:
+                        break;
+                    }
+                }while (choice3 != 0);
+                break;
+            }
+            //todo casi 5-6-7-9 + test
         case 8: //VISUALIZZA TUTTE LE NOTE
             {
                 viewNotes(AllNotes);
                 break;
             }
         default:
-            {
-                std::cout<<"Inserire un comando corretto"<<std::endl;
                 break;
-            }
         }
     }while (choice !=0);
     return 0;
 }
+

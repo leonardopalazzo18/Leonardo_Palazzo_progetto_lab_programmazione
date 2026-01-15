@@ -22,20 +22,20 @@ void Collezione::addNote(std::shared_ptr<Nota>& note){
     {
         std::cout << "errore, nessuna nota inserita" << std::endl;
     }
-    else  if (!note->getTitle().empty() && note->getTitle() == getName())
+    else  if (!note->getCollectionName().empty() && note->getCollectionName() == getName())
     {
-        std::cout<< "La nota è già presente in questa collezione!" <<std::endl;
+        std::cout<< "La nota e giaa presente in questa collezione!" <<std::endl;
     }
-    else if (!note->getTitle().empty() && note->getTitle() != getName())
+    else if (!note->getCollectionName().empty() && note->getCollectionName() != getName())
     {
-        std::cout<<"La nota è già in un'altra collezione e si trova in: " << note->getTitle() <<std::endl;
+        std::cout<<"La nota e gia in un'altra collezione e si trova in: " << note->getCollectionName() <<std::endl;
     }
     else
     {
         notes.push_back(note);
         note->setCollectionName(getName());
         notify(Action::increment);
-        std::cout<<"La nota è stata aggiunta alla collezione "<<getName() <<std::endl;
+        std::cout<<"La nota e stata aggiunta alla collezione "<<getName() <<std::endl;
 
     }
 }
@@ -43,16 +43,16 @@ void Collezione::addNote(std::shared_ptr<Nota>& note){
 void Collezione::removeNote(std::shared_ptr<Nota>& note){
     auto it = std::find(notes.begin(), notes.end(), note);
     if (it == notes.end()) {
-        std::cout << " La nota non è presente nella collezione "<< getName()<<std::endl;
+        std::cout << " La nota non e presente nella collezione "<< getName()<<std::endl;
     }
     else if ((*it)->isLocked()) {
-        std::cout << "Impossibile rimuovere la nota perchè è BLOCCATA" << std::endl;
+        std::cout << "Impossibile rimuovere la nota perche e BLOCCATA" << std::endl;
     }
     else {
         notes.erase(it);
         note->setCollectionName("");
         notify(Action::decrement);
-        std::cout << "La nota è stata rimossa dalla collezione "<< getName() <<std::endl;
+        std::cout << "La nota e stata rimossa dalla collezione "<< getName() <<std::endl;
     }
 }
 
@@ -69,7 +69,7 @@ void Collezione::viewspecificNote(const std::string& notetitle){
         }
     }
     if (found)
-        std::cout<<"La nota con titolo "<< notetitle<<" non è stata trovata nella collezione "<<getName()<<std::endl;
+        std::cout<<"La nota con titolo "<< notetitle<<" non e stata trovata nella collezione "<<getName()<<std::endl;
 }
 
 void Collezione::viewAllNotes() const{
