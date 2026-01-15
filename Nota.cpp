@@ -32,7 +32,6 @@ void Nota::viewNote() const{
     std::cout << "COLLEZIONE: " << collectionName << std::endl;
     std::cout << "BLOCCATA: " << (locked ? "SI" : "NO") << std::endl;
     std::cout << "IMPORTANTE: " <<(important ? "SI" : "NO") << std::endl;
-    std::cout << "COLLEZIONE: " << collectionName << std::endl;
     std::cout << "TESTO: " << text << "\n" << std::endl;
 }
 

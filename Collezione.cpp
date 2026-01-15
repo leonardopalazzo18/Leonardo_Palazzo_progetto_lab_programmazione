@@ -91,7 +91,7 @@ void Collezione::removeObserver(Observer* o) {
 
 
 void Collezione::notify(Action a){
-    for ( auto it : notes)
+    for ( auto it : observers)
     {
         it->update(a);
     }
