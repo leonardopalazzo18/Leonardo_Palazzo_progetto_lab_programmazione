@@ -17,9 +17,8 @@ class Collezione : public Subject
 public:
     explicit Collezione(const std::string& name);
     std::string getName() const;
-    void addNote(std::shared_ptr<Nota>& note);
-    void removeNote(std::shared_ptr<Nota>& note);
-    void viewspecificNote(const std::string& notetitle);
+    void addNote(const  std::shared_ptr<Nota>& note);
+    void removeNote(const std::shared_ptr<Nota>& note);
     void viewAllNotes() const;
 
 
@@ -30,7 +29,8 @@ public:
 private:
     std::string name;
     std::list<std::shared_ptr<Nota>> notes;
-    std::list<Observer*> observers;
+    std::list<Observer*> observers; //qui ho fatto una lista di puntatori ad observer,  in realtà ne basta uno
+    //in questo modo il programma è più facile da estendere ("aperto all'estensione ma chiuso alla modifica!")
 };
 
 
