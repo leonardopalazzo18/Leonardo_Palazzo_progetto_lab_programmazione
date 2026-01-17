@@ -16,3 +16,5 @@ void ObserverCounter::update(Action a)
     else if ( a == Action::decrement)
         counter--;
 }
+
+int ObserverCounter::getCounter() const {return this->counter;}

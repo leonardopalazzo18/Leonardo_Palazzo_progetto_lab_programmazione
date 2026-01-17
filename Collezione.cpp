@@ -30,6 +30,7 @@ void Collezione::addNote(const std::shared_ptr<Nota>& note){
     {
         notes.push_back(note);
         notify(Action::increment);
+        note->setImportant(true);
         std::cout<<"La nota e stata aggiunta alla collezione "<<getName() <<"\n"<< std::endl;
     }
     else if (!note->getCollectionName().empty() && note->getCollectionName() != getName())
@@ -54,6 +55,8 @@ void Collezione::removeNote(const std::shared_ptr<Nota>& note){
     }
     else {
         notes.erase(it);
+        if (this->getName() == "IMPORTANTI")
+            note->setImportant(false);
         if (this->getName() != "IMPORTANTI")
             note->setCollectionName("");
         notify(Action::decrement);

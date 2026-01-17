@@ -297,8 +297,6 @@ int main()
                                 else
                                 {
                                     AllCollections[collselected]->addNote(AllNotes[noteselected]);
-                                    if (collselected == 0)
-                                        AllNotes[noteselected]->setImportant(true);
                                 }
                                 break;
                             }
@@ -307,9 +305,6 @@ int main()
                                 //rimuovo la nota scelta alla collezione scelta (se possibile)
                                 int collselected =  selectCollection(AllCollections,AllCounters);
                                 AllCollections[collselected]->removeNote(AllNotes[noteselected]);
-                                if (collselected == 0)
-                                    AllNotes[noteselected]->setImportant(false);
-
                                 break;
                             }
                         default:

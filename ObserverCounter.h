@@ -12,7 +12,7 @@ class ObserverCounter : public Observer {
 public:
     explicit ObserverCounter(Collezione* c);
     void update(Action a) override;
-    int getCounter() const {return this->counter;}
+    int getCounter() const;
 private:
     Collezione* collezione;
     int counter;
